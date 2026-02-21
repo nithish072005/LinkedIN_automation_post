@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Settings {
+  id                    Int       @id @default(autoincrement())
+  productService        String
+  targetCustomer        String
+  coreProblem           String
+  uniqueAngle           String
+  linkedinAccessToken   String?   // Encrypted OAuth access token
+  linkedinTokenExpiry   DateTime? // Token expiration timestamp
+  linkedinUserId        String?   // LinkedIn user ID (URN)
+  linkedinConnectedAt   DateTime? // When the account was connected
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+model Post {
+  id               Int       @id @default(autoincrement())
+  content          String
+  dayOfWeek        String
+  scheduledDate    DateTime  @default(now()) // The date this post represents
+  isValid          Boolean   @default(false)
+  validationReason String?
+  isPosted         Boolean   @default(false)
+  published        Boolean   @default(false) // Whether post was published to LinkedIn
+  publishedAt      DateTime? // When the post was published
+  linkedinPostId   String?   // LinkedIn post ID/URN
+  publishError     String?   // Error message if publishing failed
+  createdAt        DateTime  @default(now())
+}
